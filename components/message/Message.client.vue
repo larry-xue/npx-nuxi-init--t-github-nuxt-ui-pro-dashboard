@@ -32,6 +32,7 @@ export type MessageProps = {
     body: string
   }
   isMe: boolean
+  isPending: boolean
 }
 
 const botAvatar = ref('https://i.pravatar.cc/128?u=0')
@@ -46,7 +47,8 @@ const props = defineProps({
         name: 'John Doe',
         avatar: 'https://i.pravatar.cc/128?u=0',
       },
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      isPending: false
     })
   },
   isMe: {
