@@ -4,6 +4,15 @@ const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
 
 const links = [{
+  id: 'chat',
+  label: 'Chat',
+  icon: 'i-heroicons-chat-bubble-bottom-center-text',
+  to: '/chat',
+  tooltip: {
+    text: 'Chat',
+    shortcuts: ['G', 'C']
+  }
+},{
   id: 'home',
   label: 'Home',
   icon: 'i-heroicons-home',
