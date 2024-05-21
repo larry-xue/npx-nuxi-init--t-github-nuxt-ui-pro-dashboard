@@ -32,7 +32,8 @@ export type MessageProps = {
     body: string
   }
   isMe: boolean
-  isPending: boolean
+  isPending: boolean,
+  gotResponse?: boolean,
 }
 
 const botAvatar = ref('https://i.pravatar.cc/128?u=0')

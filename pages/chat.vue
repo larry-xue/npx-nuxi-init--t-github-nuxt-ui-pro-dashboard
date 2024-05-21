@@ -62,7 +62,7 @@ const messages = ref<MessageProps[]>([
 
 function getRecentMessage() {
   // get latest 3 messages
-  return messages.value.slice(-3).map(m => {
+  return messages.value.slice(-3).filter(m => m.isMe || m.gotResponse).map(m => {
     return { role: m.isMe ? 'user' : 'assistant', content: m.message.body }
   })
 }
@@ -99,7 +99,7 @@ function sendMessage() {
       },
       body: state.value.message
     },
-    isPending: false
+    isPending: false,
   }
   messages.value.push(message)
 
@@ -113,12 +113,14 @@ function sendMessage() {
       },
       body: '...',
     },
-    isPending: true
+    isPending: true,
+    gotResponse: false
   }
 
   pending.value = true
   getAiResponse().then((response) => {
     messages.value[messages.value.length - 1].message.body = response
+    messages.value[messages.value.length - 1].gotResponse = true
   }).catch((e) => {
     toast.add({ title: 'Error', description: 'Something went wrong...', color: 'red', icon: 'i-heroicons-exclamation-circle' })
     messages.value[messages.value.length - 1].message.body = "I'm sorry, something went wrong, please try again."
