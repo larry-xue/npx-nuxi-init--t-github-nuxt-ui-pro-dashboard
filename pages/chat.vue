@@ -59,22 +59,23 @@ const messages = ref<MessageProps[]>([
   }
 ])
 
-const currentChatHistory = ref([])
 
-async function getAiResponse(text: string) {
+function getRecentMessage() {
+  // get latest 3 messages
+  return messages.value.slice(-3).map(m => {
+    return { role: m.isMe ? 'user' : 'assistant', content: m.message.body }
+  })
+}
+
+async function getAiResponse() {
   const data = await $fetch<{
-    inputs: { prompt: string },
-    response: { response: string }
-  }[]>(
+    response: string
+  }>(
     '/api/chat', {
     method: 'POST',
-    body: {
-      prompt: text
-    }
+    body: getRecentMessage()
   })
-  console.log(data)
-  currentChatHistory.value = data || []
-  return data[data.length - 1]?.response?.response || "I'm sorry, I don't have an answer for that."
+  return data.response || "I'm sorry, I don't have an answer for that."
 }
 
 function sendMessage() {
@@ -96,7 +97,7 @@ function sendMessage() {
       from: {
         name: 'Me',
       },
-      body: state.value.message.replace(/\n/g, '<br>')
+      body: state.value.message
     },
     isPending: false
   }
@@ -115,17 +116,17 @@ function sendMessage() {
     isPending: true
   }
 
-  messages.value.push(botResponse)
-
   pending.value = true
-  getAiResponse(state.value.message).then((response) => {
+  getAiResponse().then((response) => {
     messages.value[messages.value.length - 1].message.body = response
   }).catch((e) => {
-    console.log(e)
-    botResponse.message.body = "I'm sorry, I don't have an answer for that."
+    toast.add({ title: 'Error', description: 'Something went wrong...', color: 'red', icon: 'i-heroicons-exclamation-circle' })
+    messages.value[messages.value.length - 1].message.body = "I'm sorry, something went wrong, please try again."
   }).finally(() => {
     pending.value = false
   })
+
+  messages.value.push(botResponse)
 
   nextTick(() => {
     // focus textarea
