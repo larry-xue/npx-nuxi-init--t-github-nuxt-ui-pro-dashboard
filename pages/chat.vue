@@ -1,34 +1,36 @@
 <template>
-  <UDashboardPanelContent class="pb-8">
-    <UDashboardSection title="Chat" description="AI chat bot powered by Cloudflare Worker AI">
-      <template #links>
-        <!-- <UFormGroup label="" name="model" class="w-100">
-          <USelect v-model="state.model" :options="['gpt-3.5-turbo', 'gpt-4']">
+  <UDashboardPage class="pb-8">
+    <UDashboardPanel grow>
+      <UDashboardNavbar title="Chat">
+        <template #right>
+          <UFormGroup label="" name="model" class="w-100">
+          <USelect v-model="state .model" :options="['gpt-3.5-turbo', 'gpt-4']">
           </USelect>
-        </UFormGroup> -->
-      </template>
-    </UDashboardSection>
+        </UFormGroup>
+        </template>
+      </UDashboardNavbar>
 
-    <UDivider class="mb-4" />
+      <UDivider class="mb-4" />
 
-    <div class="w-full h-full overflow-x-hidden overflow-y-auto">
-      <ClientOnly>
-        <div v-for="msg in messages" :ref="(el) => messageBoxRef = el">
-          <Message :is-me="msg.isMe" :message="msg.message" />
-        </div>
-      </ClientOnly>
-    </div>
+      <div class="w-full h-full overflow-x-hidden overflow-y-auto">
+        <ClientOnly>
+          <div v-for="msg in messages" :ref="(el) => messageBoxRef = el">
+            <Message :is-me="msg.isMe" :message="msg.message" />
+          </div>
+        </ClientOnly>
+      </div>
 
-    <UForm :state="state" :validate-on="['submit']" class="flex gap-1 flex-nowrap w-full box-border">
-      <UFormGroup label="" name="input" class="shrink w-full">
-        <UTextarea autoresize :rows="1" @keyup.enter.exact="sendMessage" v-model="state.message" :maxrows="10"
-          placeholder="Type a message..." :ref="(el) => textareaRef = el" />
-      </UFormGroup>
-      <UFormGroup label="" name="output" class="shrink-0 w-auto flex items-end">
-        <UButton v-bind:loading="pending" @click="sendMessage" color="black" label="Send" class="w-full" />
-      </UFormGroup>
-    </UForm>
-  </UDashboardPanelContent>
+      <UForm :state="state" :validate-on="['submit']" class="flex gap-1 flex-nowrap w-full box-border px-2">
+        <UFormGroup label="" name="input" class="shrink w-full">
+          <UTextarea autoresize :rows="1" @keyup.enter.exact="sendMessage" v-model="state.message" :maxrows="10"
+            placeholder="Type a message..." :ref="(el) => textareaRef = el" />
+        </UFormGroup>
+        <UFormGroup label="" name="output" class="shrink-0 w-auto flex items-end">
+          <UButton v-bind:loading="pending" @click="sendMessage" label="Send" class="w-full" />
+        </UFormGroup>
+      </UForm>
+    </UDashboardPanel>
+  </UDashboardPage>
 </template>
 
 <script setup lang="ts">
