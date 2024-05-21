@@ -10,15 +10,15 @@ useHead({
     { key: 'theme-color', name: 'theme-color', content: color }
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' }
+    { rel: 'icon', href: 'https://avatars.githubusercontent.com/u/48818060?v=4' }
   ],
   htmlAttrs: {
     lang: 'en'
   }
 })
 
-const title = 'Nuxt UI Pro - Dashboard template'
-const description = 'Nuxt UI Pro is a collection of premium Vue components built on top of Nuxt UI to create beautiful & responsive Nuxt applications in minutes.'
+const title = 'Cloudflare Worker AI'
+const description = 'a chatbot for cloudflare workers powered by cloudflare worker ai developed by larry-xue'
 
 useSeoMeta({
   title,

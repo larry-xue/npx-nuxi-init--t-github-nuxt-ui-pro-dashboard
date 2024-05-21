@@ -2,10 +2,10 @@
   <UDashboardPanelContent class="pb-8">
     <UDashboardSection title="Chat" description="AI chat bot powered by Cloudflare Worker AI">
       <template #links>
-        <UFormGroup label="" name="model" class="w-100">
+        <!-- <UFormGroup label="" name="model" class="w-100">
           <USelect v-model="state.model" :options="['gpt-3.5-turbo', 'gpt-4']">
           </USelect>
-        </UFormGroup>
+        </UFormGroup> -->
       </template>
     </UDashboardSection>
 
@@ -21,7 +21,7 @@
 
     <UForm :state="state" :validate-on="['submit']" class="flex gap-1 flex-nowrap w-full box-border">
       <UFormGroup label="" name="input" class="shrink w-full">
-        <UTextarea autoresize :rows="1" @keyup.enter="sendMessage" v-model="state.message" :maxrows="10"
+        <UTextarea autoresize :rows="1" @keyup.enter.exact="sendMessage" v-model="state.message" :maxrows="10"
           placeholder="Type a message..." :ref="(el) => textareaRef = el" />
       </UFormGroup>
       <UFormGroup label="" name="output" class="shrink-0 w-auto flex items-end">
@@ -50,7 +50,7 @@ const messages = ref<MessageProps[]>([
     isMe: false,
     message: {
       from: {
-        name: 'You',
+        name: 'Bot',
         avatar: 'https://i.pravatar.cc/300'
       },
       body: 'Hello, how can I help you today?',
@@ -78,6 +78,7 @@ async function getAiResponse(text: string) {
 }
 
 function sendMessage() {
+  if (pending.value) return
   if (!state.value.message) {
     // notify
     return toast.add({
